@@ -1,0 +1,78 @@
+---
+description: Native macOS Pomodoro app requirements and teaching guidance
+alwaysApply: true
+---
+
+# Pomodoro — Native macOS Menu Bar App
+
+## What We're Building
+
+A personal Pomodoro timer that lives in the macOS menu bar (top toolbar). It is a native Mac utility, not a web app.
+
+**Stack:** Swift (language) + SwiftUI (UI) + AppKit (macOS system integration) + Xcode (build tool).
+
+## Product Requirements
+
+1. **Menu bar presence** — App icon/progress indicator in the top toolbar via `MenuBarExtra` or equivalent native pattern.
+2. **Visual progress only in the menu bar** — Do NOT show remaining minutes, countdown text, or numeric time in the menu bar icon. Use a ring that fills. Text/status is fine inside the dropdown panel, never in the toolbar icon.
+3. **Default durations** — 25 min focus, 5 min short break, 5 min rest ritual.
+4. **Core controls** — Start, pause/resume, reset. Progress state must be visible at a glance.
+5. **Keep it local** — No accounts, cloud sync, or subscriptions. Persistence is local (`UserDefaults` + local files) only.
+
+## In Scope (Current)
+
+- Focus + short break + rest ritual phases
+- Sleep-resilient timing (anchor to an end date, not a running counter)
+- System notifications on phase completion (bundled app only)
+- Focus intent per session
+- Local thought capture to markdown
+- Daily streak with a forgiving weekly grace day
+- Light in-panel stats (today's count, streak) — not in the menu bar icon
+
+## Out of Scope (Unless Asked)
+
+- App/website blocking
+- Task lists or full project management
+- History dashboards / charts
+- iCloud sync or multi-device
+- AI insights
+- Custom themes beyond native macOS appearance
+
+## Engineering Direction
+
+- Prefer **native macOS patterns** over web-style architecture (no React/Electron/Tauri).
+- Use **SwiftUI** for declarative UI, state-driven views, and drawing progress shapes.
+- Use **AppKit** only where SwiftUI needs macOS utility support (menu bar extras, notifications, app lifecycle).
+- Keep **small, focused files** with clear responsibilities:
+  - App entry point
+  - Menu bar UI + progress indicator
+  - Timer model (state, elapsed time, progress fraction)
+  - Settings/preferences (only when needed)
+- Timer logic: use `Timer` or equivalent; compute progress as `elapsed / totalDuration`.
+- Follow macOS Human Interface Guidelines for menu bar utilities: minimal, unobtrusive, glanceable.
+
+## Teaching Mode (Required)
+
+The user is learning Swift, SwiftUI, and AppKit. **Build and teach side-by-side.**
+
+When making changes:
+
+1. **Explain before or alongside code** — For each new concept (e.g. `@State`, `MenuBarExtra`, `Timer`), add a short "Learning note" in the chat response.
+2. **Build in small increments** — One layer at a time so the user can follow (e.g. shell first, then timer, then progress UI).
+3. **Comments in code** — Only for non-obvious macOS-specific behavior, not basic syntax.
+4. **Avoid jargon dumps** — Define terms when first used (View, ObservableObject, menu bar extra, etc.).
+
+## Code Conventions
+
+- Swift naming: camelCase for variables/functions, PascalCase for types.
+- Prefer value types (`struct`) for simple models; use `@Observable` or `ObservableObject` for timer state when views need updates.
+- Keep the menu bar indicator compact (typical size ~18–22pt); test in light and dark mode.
+
+## Verification Checklist
+
+Before claiming a feature done:
+
+- App runs from Xcode and appears in the menu bar.
+- Progress indicator updates smoothly; no numeric time in the menu bar.
+- Default session is 25 minutes; start/pause/reset work correctly.
+- User can explain what each main file does after reading the learning notes.

@@ -1,0 +1,16 @@
+name: Pomofocus
+options:
+  bundleIdPrefix: com.nanthansr
+  deploymentTarget:
+    macOS: "13.0"
+targets:
+  Pomofocus:
+    type: application
+    platform: macOS
+    sources:
+      - Pomofocus
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.nanthansr.pomofocus
+      INFOPLIST_FILE: Pomofocus/Info.plist
+      SWIFT_VERSION: "5.9"
+      MACOSX_DEPLOYMENT_TARGET: "13.0"
